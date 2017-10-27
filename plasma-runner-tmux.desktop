@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Tmux
+Comment=Searches running tmux sessions
+X-KDE-ServiceTypes=Plasma/Runner
+Type=Service
+Icon=konsole
+X-KDE-Library=krunner_tmux
+X-KDE-PluginInfo-Author=Jan Buchar
+X-KDE-PluginInfo-Name=tmux
+X-KDE-PluginInfo-Version=0.0.1
+X-KDE-PluginInfo-License=MIT
+X-KDE-PluginInfo-EnabledByDefault=true
+X-Plasma-AdvertiseSingleRunnerQueryMode=true
