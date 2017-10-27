@@ -41,11 +41,12 @@ void Tmux::match(Plasma::RunnerContext &context)
     const QString enteredKey = context.query();
     QList<Plasma::QueryMatch> matches;
 
-    FILE* pipe{popen("tmux ls", "r")};
-    char buffer[1024];
+    QProcess ls;
+    ls.start("tmux", QStringList() << "ls");
+    ls.waitForFinished();
 
-    while (std::fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-        QString line = QString::fromUtf8(buffer);
+    while (ls.canReadLine()) {
+        QString line = QString::fromLocal8Bit(ls.readLine());
         QString sessionName = line.split(':').first();
         
         if (sessionName.startsWith(enteredKey)) {
@@ -59,7 +60,6 @@ void Tmux::match(Plasma::RunnerContext &context)
             match.setRelevance((float) enteredKey.length() / (float) sessionName.length());
             matches.append(match);
         }
-
     }
 
     context.addMatches(matches);
