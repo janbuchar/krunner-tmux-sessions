@@ -53,8 +53,9 @@ void Tmux::match(Plasma::RunnerContext &context)
             // We have a match
             Plasma::QueryMatch match(this);
             // Basic properties for the match
-            match.setIcon(QIcon::fromTheme("konsole"));
-            match.setText(i18n("Tmux session %1", sessionName));
+            match.setIcon(QIcon::fromTheme("utilities-terminal"));
+            match.setText(sessionName);
+            match.setSubtext(i18n("Attach to tmux session"));
             match.setData(sessionName);
             match.setId(sessionName);
             match.setRelevance((float) enteredKey.length() / (float) sessionName.length());
