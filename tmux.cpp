@@ -38,7 +38,13 @@ void Tmux::match(Plasma::RunnerContext &context)
 {
     if (!context.isValid()) return;
 
-    const QString enteredKey = context.query();
+    QString query = context.query();
+    bool isQueryPrefixed = false;
+    if (query.startsWith("tmux")) {
+	    query = query.right(query.length() - 4).trimmed();
+	    isQueryPrefixed = true;
+    }
+
     QList<Plasma::QueryMatch> matches;
 
     QProcess ls;
@@ -49,7 +55,7 @@ void Tmux::match(Plasma::RunnerContext &context)
         QString line = QString::fromLocal8Bit(ls.readLine());
         QString sessionName = line.split(':').first();
         
-        if (sessionName.startsWith(enteredKey)) {
+        if (sessionName.startsWith(query)) {
             // We have a match
             Plasma::QueryMatch match(this);
             // Basic properties for the match
@@ -58,7 +64,8 @@ void Tmux::match(Plasma::RunnerContext &context)
             match.setSubtext(i18n("Attach to tmux session"));
             match.setData(sessionName);
             match.setId(sessionName);
-            match.setRelevance((float) enteredKey.length() / (float) sessionName.length());
+	    float relevance = (float) query.length() / (float) sessionName.length();
+            match.setRelevance(isQueryPrefixed ? 1.0 : relevance);
             matches.append(match);
         }
     }
