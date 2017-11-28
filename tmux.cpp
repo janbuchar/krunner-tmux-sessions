@@ -50,6 +50,7 @@ void Tmux::match(Plasma::RunnerContext &context)
     QProcess ls;
     ls.start("tmux", QStringList() << "ls");
     ls.waitForFinished();
+    bool matched = false;
 
     while (ls.canReadLine()) {
         QString line = QString::fromLocal8Bit(ls.readLine());
@@ -57,17 +58,37 @@ void Tmux::match(Plasma::RunnerContext &context)
         
         if (sessionName.startsWith(query)) {
             // We have a match
+	    matched = true;
             Plasma::QueryMatch match(this);
             // Basic properties for the match
+	    QMap<QString, QVariant> matchData;
+	    matchData.insert("sessionName", sessionName);
+	    matchData.insert("exists", true);
             match.setIcon(QIcon::fromTheme("utilities-terminal"));
             match.setText(sessionName);
             match.setSubtext(i18n("Attach to tmux session"));
-            match.setData(sessionName);
+            match.setData(matchData);
             match.setId(sessionName);
 	    float relevance = (float) query.length() / (float) sessionName.length();
             match.setRelevance(isQueryPrefixed ? 1.0 : relevance);
             matches.append(match);
         }
+    }
+
+    if (isQueryPrefixed && !matched) {
+        Plasma::QueryMatch match(this);
+
+	QMap<QString, QVariant> matchData;
+	matchData.insert("sessionName", query);
+	matchData.insert("exists", false);
+
+        match.setIcon(QIcon::fromTheme("utilities-terminal"));
+        match.setText(query);
+        match.setSubtext(i18n("Create tmux session"));
+        match.setId(query);
+        match.setRelevance(1.0);
+	match.setData(matchData);
+        matches.append(match);
     }
 
     context.addMatches(matches);
@@ -76,14 +97,24 @@ void Tmux::match(Plasma::RunnerContext &context)
 void Tmux::run(const Plasma::RunnerContext &context, const Plasma::QueryMatch &match)
 {
     Q_UNUSED(context);
+    QMap<QString, QVariant> matchData = match.data().toMap();
 
     QString program("konsole");
     QStringList args;
     args.append("-e");
     args.append("tmux");
-    args.append("attach");
-    args.append("-t");
-    args.append(match.data().toString());
+
+    if (matchData.value("exists").toBool()) {
+        args.append("attach");
+        args.append("-t");
+    } else {
+	args.append("new");
+        args.append("-c");
+        args.append("~");
+        args.append("-s");
+    }
+
+    args.append(matchData.value("sessionName").toString());
 
     QProcess::startDetached(program, args);
 }
