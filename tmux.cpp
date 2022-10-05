@@ -3,6 +3,7 @@
 #include <KLocalizedString>
 #include <KConfigCore/KConfig>
 #include <KConfigCore/KConfigGroup>
+#include <KTerminalLauncherJob>
 
 #include <QApplication>
 #include <QProcess>
@@ -99,9 +100,7 @@ void Tmux::run(const Plasma::RunnerContext &context, const Plasma::QueryMatch &m
     Q_UNUSED(context);
     QMap<QString, QVariant> matchData = match.data().toMap();
 
-    QString program("konsole");
     QStringList args;
-    args.append("-e");
     args.append("tmux");
 
     if (matchData.value("exists").toBool()) {
@@ -116,7 +115,8 @@ void Tmux::run(const Plasma::RunnerContext &context, const Plasma::QueryMatch &m
 
     args.append(matchData.value("sessionName").toString());
 
-    QProcess::startDetached(program, args);
+    KTerminalLauncherJob job(args.join(" "));
+    job.start();
 }
 
 K_EXPORT_PLASMA_RUNNER(tmux, Tmux)
