@@ -12,20 +12,15 @@
 
 using namespace std;
 
-Tmux::Tmux(QObject *parent, const QVariantList &args)
-    : Plasma::AbstractRunner(parent, args)
+Tmux::Tmux(QObject *parent, const KPluginMetaData &metadata, const QVariantList &args)
+    : Plasma::AbstractRunner(parent, metadata, args)
 {
     Q_UNUSED(args);
     
     // General runner configuration
     setObjectName(QLatin1String("Tmux"));
-    setHasRunOptions(true);
-    setIgnoredTypes(Plasma::RunnerContext::Directory |
-                    Plasma::RunnerContext::File |
-                    Plasma::RunnerContext::NetworkLocation);
-    setSpeed(AbstractRunner::NormalSpeed);
     setPriority(HighestPriority);
-    setDefaultSyntax(
+    addSyntax(
         Plasma::RunnerSyntax(
             QString::fromLatin1(":q:"),
             i18n("Opens a terminal window attached to a tmux session")
