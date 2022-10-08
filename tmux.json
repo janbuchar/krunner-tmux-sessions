@@ -1,0 +1,18 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Jan Buchar",
+                "Email": "Teyras@gmail.com"
+            }
+        ],
+        "Description": "Searches running tmux sessions",
+        "EnabledByDefault": true,
+        "Icon": "utilities-terminal",
+        "Id": "tmux",
+        "License": "MIT",
+        "Name": "Tmux",
+        "Version": "0.0.5"
+    },
+    "X-Plasma-AdvertiseSingleRunnerQueryMode": true
+}

@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.16.0)
 project(RunnerTmux)
 
-find_package(ECM 5.12.0 REQUIRED NO_MODULE)
+set(KF5_MIN_VERSION 5.72.0)
+find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 set (CMAKE_MODULE_PATH
      ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_MODULE_PATH}
 )
@@ -27,5 +28,4 @@ target_link_libraries(krunner_tmux KF5::Runner Qt5::Widgets
 		      KF5::KIOWidgets
 		      KF5::KIONTLM)
                       
-install(TARGETS krunner_tmux DESTINATION ${PLUGIN_INSTALL_DIR})
-install(FILES plasma-runner-tmux.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(TARGETS krunner_tmux DESTINATION ${PLUGIN_INSTALL_DIR}/kf5/krunner)

@@ -114,6 +114,6 @@ void Tmux::run(const Plasma::RunnerContext &context, const Plasma::QueryMatch &m
     job.start();
 }
 
-K_EXPORT_PLASMA_RUNNER(tmux, Tmux)
+K_EXPORT_PLASMA_RUNNER_WITH_JSON(Tmux, "tmux.json")
 
 #include "tmux.moc"
