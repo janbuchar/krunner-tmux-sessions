@@ -3,16 +3,16 @@
 
 #include <KRunner/AbstractRunner>
 
-class Tmux : public Plasma::AbstractRunner
+class Tmux : public KRunner::AbstractRunner
 {
     Q_OBJECT
 
 public:
-    Tmux(QObject *parent, const KPluginMetaData &metadata, const QVariantList &args);
+    Tmux(QObject *parent, const KPluginMetaData &metadata);
     ~Tmux();
 
-    void match(Plasma::RunnerContext &) override;
-    void run(const Plasma::RunnerContext &, const Plasma::QueryMatch &) override;
+    void match(KRunner::RunnerContext &) override;
+    void run(const KRunner::RunnerContext &, const KRunner::QueryMatch &) override;
 };
 
 #endif

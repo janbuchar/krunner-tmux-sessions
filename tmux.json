@@ -12,7 +12,7 @@
         "Id": "tmux",
         "License": "MIT",
         "Name": "Tmux",
-        "Version": "0.0.5"
+        "Version": "0.0.6"
     },
     "X-Plasma-AdvertiseSingleRunnerQueryMode": true
 }
